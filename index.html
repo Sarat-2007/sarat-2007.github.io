@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarat Chandra.N | Systems Architect</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    /* --- 1. FONTS --- */
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
+
+    :root {
+        --bg: #050505;
+        --text: #e1e1e1;
+        --accent: #FF3333; /* Aerospace Orange */
+        --panel-bg: #0a0a0a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+    }
+
+    /* --- 2. KINETIC BACKGROUND --- */
+    .marquee-container {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; opacity: 0.04;
+        display: flex; flex-direction: column; justify-content: space-between; pointer-events: none;
+    }
+    .marquee {
+        white-space: nowrap; font-family: 'Oswald', sans-serif; font-size: 13vh;
+        text-transform: uppercase; font-weight: 700; animation: scroll 60s linear infinite;
+    }
+    .marquee.reverse { animation-direction: reverse; }
+    @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+    /* --- 3. CURSOR --- */
+    #cursor {
+        position: fixed; width: 60px; height: 60px; background: #fff; border-radius: 50%;
+        transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
+        mix-blend-mode: difference; transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    body.active-hover #cursor { transform: translate(-50%, -50%) scale(0.3); }
+
+    /* --- 4. NAVIGATION --- */
+    header {
+        position: fixed; top: 0; left: 0; width: 100%; 
+        padding: 30px 50px 30px 110px; 
+        display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        mix-blend-mode: difference;
+    }
+    .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
+    .nav-list { display: flex; gap: 30px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
+    .nav-item { opacity: 0.6; transition: 0.3s; position: relative; cursor: none; text-transform: capitalize; }
+    .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
+
+    /* --- 5. SIDEBAR --- */
+    .sidebar {
+        position: fixed;
+        left: 0; 
+        top: 0;
+        height: 100vh;
+        width: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1500;
+        border-right: 1px solid rgba(255,255,255,0.05);
+        background: rgba(5,5,5,0.2);
+        backdrop-filter: blur(2px);
+    }
+    .sidebar-line {
+        width: 1px;
+        height: 100px;
+        background: rgba(255,255,255,0.2);
+        margin: 20px 0;
+    }
+    .social-icon {
+        color: #fff;
+        font-size: 1.2rem;
+        margin: 15px 0;
+        opacity: 0.5;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+    .social-icon:hover {
+        opacity: 1;
+        color: var(--accent);
+        transform: scale(1.2);
+    }
+    .sidebar-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        font-family: 'Oswald';
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        color: var(--accent);
+        margin-bottom: 20px;
+        opacity: 0.8;
+        transform: rotate(180deg);
+    }
+
+    /* --- 6. MAIN SCROLLER --- */
+    .snap-container {
+        height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory;
+        scroll-behavior: smooth; transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        padding-left: 80px;
+        padding-right: 0;
+    }
+    body.detail-active .snap-container { transform: scale(0.9) translateX(20%); opacity: 0; pointer-events: none; }
+
+    section {
+        height: 100vh; width: 100%; scroll-snap-align: start; display: flex; flex-direction: column;
+        justify-content: center; padding: 0 10vw; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+    }
+
+    /* TYPOGRAPHY */
+    .label { font-family: 'Oswald'; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
+    h1 { font-family: 'Oswald'; font-size: 6vw; text-transform: uppercase; line-height: 0.9; font-weight: 500; }
+    h2 { font-family: 'Cormorant Garamond'; font-size: 3.5vw; font-style: italic; line-height: 1; margin-bottom: 30px; }
+    p { font-family: 'Cormorant Garamond'; font-size: 1.4rem; line-height: 1.5; max-width: 650px; color: #bbb; }
+    .keyword { border-bottom: 1px solid #fff; color: #fff; transition: 0.3s; display: inline-block; }
+    .keyword:hover { color: var(--accent); border-color: var(--accent); transform: skewX(-10deg); }
+
+    /* --- COMPONENTS --- */
+    .major-placeholder {
+        width: 100%; height: 50vh; border: 1px dashed rgba(255,255,255,0.2);
+        display: flex; justify-content: center; align-items: center; position: relative;
+        background: radial-gradient(circle, rgba(255,51,51,0.05) 0%, transparent 70%); transition: 0.3s;
+    }
+    .major-placeholder:hover { border-color: var(--accent); background: radial-gradient(circle, rgba(255,51,51,0.1) 0%, transparent 70%); }
+    .major-text { font-family: 'Oswald'; font-size: 2rem; color: var(--accent); text-align: center; letter-spacing: 5px; animation: pulse 3s infinite; }
+    @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+
+    .project-row {
+        display: flex; justify-content: space-between; align-items: baseline; padding: 2vh 0; 
+        border-bottom: 1px solid #333; transition: 0.4s;
+    }
+    .project-row:hover { padding-left: 20px; background: #fff; color: #000; }
+    .p-name { font-family: 'Oswald'; font-size: 1.6rem; text-transform: uppercase; } 
+    .p-stack { font-family: 'Oswald'; font-size: 0.75rem; margin-top: 2px; opacity: 0.7; }
+
+    .research-hero { border-left: 4px solid var(--accent); padding-left: 40px; transition: 0.3s; position: relative; }
+    .research-hero:hover { padding-left: 60px; }
+
+    .scanner-container { display: flex; width: 100%; height: 50vh; border: 1px solid #333; overflow: hidden; } 
+    .scanner-panel { flex: 1; position: relative; padding: 40px; border-right: 1px solid #333; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; justify-content: center; }
+    .scanner-panel:hover { flex: 2; opacity: 1; background: rgba(255,255,255,0.02); }
+    .panel-title { font-family: 'Oswald'; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
+    .panel-sub { font-family: 'Cormorant Garamond'; font-style: italic; font-size: 1.2rem; margin-bottom: 30px; }
+    .panel-details { font-size: 1.1rem; max-width: 500px; }
+
+    .ops-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        gap: 60px; 
+        width: 100%;
+        margin-top: 20px;
+    }
+    .ops-column { display: flex; flex-direction: column; }
+    .ops-header {
+        font-family: 'Oswald'; color: var(--accent); font-size: 1.1rem; letter-spacing: 2px;
+        margin-bottom: 20px; border-bottom: 2px solid var(--accent); padding-bottom: 10px;
+        display: inline-block; width: 100%;
+    }
+
+    /* --- SKILLS: DATA PANEL DESIGN --- */
+    .toolkit-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px; 
+        margin-top: 20px;
+    }
+    .toolkit-category {
+        background: rgba(255,255,255,0.03); 
+        border: 1px solid #222;
+        padding: 25px;
+        transition: 0.3s;
+    }
+    .toolkit-category:hover {
+        border-color: rgba(255,51,51,0.3);
+        background: rgba(255,51,51,0.02);
+    }
+    .toolkit-header {
+        font-family: 'Oswald';
+        color: var(--accent);
+        font-size: 1rem;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 5px;
+    }
+    .toolkit-list {
+        list-style: none;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.85rem;
+        color: #bbb;
+    }
+    .toolkit-list li {
+        margin-bottom: 0;
+        padding: 8px 0; 
+        border-bottom: 1px solid #1a1a1a; 
+        display: flex; justify-content: space-between;
+        transition: 0.2s;
+    }
+    .toolkit-list li:last-child { border-bottom: none; }
+    .toolkit-list li:hover {
+        color: #fff;
+        padding-left: 5px; 
+        text-shadow: 0 0 5px rgba(255,255,255,0.5);
+    }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; max-width: 800px; }
+    .contact-link {
+        font-family: 'Oswald'; font-size: 2rem; color: #fff; text-decoration: none; border: 1px solid #333;
+        padding: 20px; transition: 0.3s; display: flex; justify-content: space-between; align-items: center;
+    }
+    .contact-link:hover { background: #fff; color: #000; border-color: #fff; }
+
+    /* FOOTER */
+    .sys-footer {
+        padding: 40px 10vw;
+        border-top: 1px solid #333;
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Space Mono';
+        font-size: 0.7rem;
+        color: #555;
+    }
+
+    /* --- 7. DETAIL VIEW SYSTEM --- */
+    .detail-layer {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--panel-bg); z-index: 2000;
+        transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .detail-layer.open { transform: translateX(0); }
+    
+    .detail-header { padding: 30px 10vw; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+    
+    .close-btn { font-family: 'Oswald'; font-size: 1rem; color: var(--accent); border: 1px solid var(--accent); padding: 10px 20px; text-transform: uppercase; transition: 0.3s; }
+    .close-btn:hover { background: var(--accent); color: #000; }
+    
+    .detail-content { padding: 40px 10vw; max-width: 1400px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: all 0.6s ease 0.3s; }
+    .detail-layer.open .detail-content { opacity: 1; transform: translateY(0); } 
+
+    .detail-title { font-family: 'Oswald'; font-size: 3.5rem; text-transform: uppercase; line-height: 1; margin-bottom: 15px; }
+    .detail-meta { font-family: 'Space Mono', monospace; color: #888; margin-bottom: 40px; display: flex; gap: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; font-size: 0.9rem; }
+    .detail-body { font-family: 'Cormorant Garamond'; font-size: 1.5rem; line-height: 1.5; color: #ccc; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+    
+    .tech-list { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--accent); list-style: none; }
+    .tech-list li { margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; transition: 0.3s; cursor: none;}
+    .tech-list li:hover { padding-left: 10px; color: #fff; text-shadow: 0 0 5px var(--accent); }
+    
+    .detail-section-header {
+        font-family: 'Oswald'; color: var(--accent); font-size: 1.1rem; margin-top: 20px; margin-bottom: 8px; display: block; letter-spacing: 1px;
+    }
+
+    .repo-btn {
+        display: inline-block; margin-top: 30px; font-family: 'Oswald'; font-size: 0.9rem; color: #000; background: var(--accent); border: 1px solid var(--accent); padding: 10px 25px; text-transform: uppercase; text-decoration: none; transition: 0.3s; font-weight: 500;
+    }
+    .repo-btn:hover { background: transparent; color: var(--accent); box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+
+    /* ALERT BOX FOR CLASSIFIED */
+    #page-classified {
+        background: radial-gradient(circle, rgba(10,0,0,0.95) 0%, rgba(0,0,0,1) 100%);
+        backdrop-filter: blur(10px);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .alert-box {
+        border: 2px solid var(--accent);
+        padding: 60px;
+        color: var(--accent);
+        font-family: 'Space Mono';
+        text-align: center;
+        max-width: 600px;
+        background: rgba(0,0,0,0.8);
+        box-shadow: 0 0 50px rgba(255, 51, 51, 0.1);
+    }
+
+    /* =========================================
+       --- MOBILE RESPONSIVENESS (MAX 768px) ---
+       ========================================= */
+    @media (max-width: 768px) {
+        .sidebar { width: 100%; height: 60px; top: auto; bottom: 0; left: 0; border-right: none; border-top: 1px solid rgba(255,255,255,0.1); flex-direction: row; justify-content: space-around; background: #000; }
+        .sidebar-line, .sidebar-text { display: none; }
+        .social-icon { margin: 0; font-size: 1.5rem; }
+        .snap-container { padding-left: 0; padding-bottom: 70px; }
+        header { padding: 20px; background: rgba(5,5,5,0.9); }
+        .logo { font-size: 1.2rem; letter-spacing: 1px; }
+        .nav-list { display: none; }
+        h1 { font-size: 12vw; }
+        h2 { font-size: 8vw; }
+        p { font-size: 1.1rem; }
+        .ops-grid { grid-template-columns: 1fr; gap: 40px; }
+        .toolkit-container { grid-template-columns: 1fr; gap: 20px; } 
+        .contact-grid { grid-template-columns: 1fr; }
+        .detail-body { grid-template-columns: 1fr; gap: 30px; }
+        /* MOBILE PADDING FIX */
+        .detail-content { padding: 40px 20px 100px 20px; }
+        
+        .scanner-container { flex-direction: column; height: auto; }
+        .scanner-panel { border-right: none; border-bottom: 1px solid #333; height: 30vh; }
+        section { padding: 0 20px; }
+        .detail-title { font-size: 2.5rem; }
+        .detail-meta { flex-direction: column; gap: 10px; }
+        #cursor { display: none; }
+        * { cursor: auto; }
+        
+        .alert-box { padding: 30px; width: 90%; }
+    }
+
+</style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee">Scientific Machine Learning  •  Physics-Informed AI  •  Computational Fluid Dynamics</div>
+        <div class="marquee reverse">Embedded Systems Architecture  •  Inverse Kinematics  •  Real-Time Control</div>
+    </div>
+
+    <div id="cursor"></div>
+
+    <div class="sidebar">
+        <div class="sidebar-line"></div>
+        <a href="https://github.com/Sarat-2007" class="social-icon hover-trigger" title="GitHub" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/saratchandranallabati" class="social-icon hover-trigger" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:saratchandranallabati@gmail.com" class="social-icon hover-trigger" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="resume.pdf" class="social-icon hover-trigger" title="Download Resume" target="_blank"><i class="fas fa-file-pdf"></i></a>
+        <div class="sidebar-line"></div>
+        <div class="sidebar-text">CONTACT</div>
+    </div>
+
+    <header>
+        <div class="logo">SARAT CHANDRA.N<span style="color:var(--accent)">.</span></div>
+        <div class="nav-list">
+            <div class="nav-item active" onclick="jump(0)">Identity</div>
+            <div class="nav-item" onclick="jump(1)">Systems</div>
+            <div class="nav-item" onclick="jump(2)">Modules</div>
+            <div class="nav-item" onclick="jump(3)">Research</div>
+            <div class="nav-item" onclick="jump(4)">Present Focus</div>
+            <div class="nav-item" onclick="jump(5)">Field Ops</div>
+        </div>
+    </header>
+
+    <div class="snap-container" id="scroller">
+
+        <section>
+            <span class="label">System Identity</span>
+            <h1 class="hover-trigger">Nallabati<br>Venkata Durga<br>Sai Sarat Chandra</h1>
+            <div style="display: flex; justify-content: space-between; margin-top: 40px; align-items: flex-end;">
+                <p>Designing architectures at the edge of <span class="keyword hover-trigger">Fluid Mechanics</span> and <span class="keyword hover-trigger">Artificial Intelligence</span>.</p>
+                <div style="font-family: 'Oswald'; text-align: right;">AMRITA VISHWA VIDYAPEETHAM<br>CPI: 9.27<br><span style="font-size: 0.8rem; color: #888;">AP POLYCET RANK: 497</span></div>
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Major Architectures</span>
+            <h2>System Under Development</h2>
+            <div class="major-placeholder hover-trigger" onclick="openPage('classified')">
+                <div class="major-text">[ CLASSIFIED ]<br><span style="font-size: 1rem; color: #fff; opacity: 0.5;">CLICK TO ACCESS LOGS</span></div>
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Operational Toolkit</span>
+            <div class="toolkit-container">
+                
+                <div class="toolkit-category">
+                    <div class="toolkit-header">HARDWARE CONTROL</div>
+                    <ul class="toolkit-list">
+                        <li class="hover-trigger">Arduino / STM32</li>
+                        <li class="hover-trigger">Raspberry Pi (SBC)</li>
+                        <li class="hover-trigger">ROS / ROS2 Nav Stack</li>
+                        <li class="hover-trigger">I2C / UART / CAN Bus</li>
+                        <li class="hover-trigger">Sensors (LiDAR/IMU)</li>
+                        <li class="hover-trigger">Power Distribution</li>
+                    </ul>
+                </div>
+
+                <div class="toolkit-category">
+                    <div class="toolkit-header">SOFTWARE CORE</div>
+                    <ul class="toolkit-list">
+                        <li class="hover-trigger">C / C++ (Embedded)</li>
+                        <li class="hover-trigger">Python (AI/Scripting)</li>
+                        <li class="hover-trigger">Supervised ML (Reg/Class)</li>
+                        <li class="hover-trigger">SciML / CFD Basics</li>
+                        <li class="hover-trigger">IBM Qiskit / SQL</li>
+                        <li class="hover-trigger">Linux / Bash</li>
+                    </ul>
+                </div>
+
+                <div class="toolkit-category">
+                    <div class="toolkit-header">WORKFLOW & TOOLS</div>
+                    <ul class="toolkit-list">
+                        <li class="hover-trigger">Fusion 360 / AutoCAD</li>
+                        <li class="hover-trigger">VS Code / Arduino IDE</li>
+                        <li class="hover-trigger">Geany / NotebookLM</li>
+                        <li class="hover-trigger">Google AI Studio / Soul HQ</li>
+                        <li class="hover-trigger">Figma / Adobe XD</li>
+                        <li class="hover-trigger">Photoshop / Canva</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Embedded Modules</span>
+            <h2>Minor Systems</h2>
+            <div style="border-top: 1px solid #333;">
+                <div class="project-row hover-trigger" onclick="openPage('voter')">
+                    <div><div class="p-name">Secure Voter</div><div class="p-stack">STRUCTS / FILE I/O / LOGIC</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('gsm')">
+                    <div><div class="p-name">GSM Automation</div><div class="p-stack">A7670C / HARDWARE RELAYS</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('vital')">
+                    <div><div class="p-name">IoT Vitals</div><div class="p-stack">ESP8266 / MAX30102</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('rover')">
+                    <div><div class="p-name">Bluetooth Rover</div><div class="p-stack">ARDUINO / KINEMATICS</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Academic Publication</span>
+            <div class="research-hero hover-trigger" onclick="openPage('research')">
+                <h2 style="font-style: normal; text-transform: uppercase;">Complexity in Autonomy</h2>
+                <p style="font-style: italic; color: #fff;">"Small Scale Raspberry Pi Based Autonomous Car: A Practical Guide to Understand Complexity"</p>
+                <p style="margin-top: 20px; font-family: 'Oswald'; border-bottom: 1px solid var(--accent); display: inline-block;">READ ABSTRACT</p>
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Present Focus</span>
+            <div class="scanner-container">
+                <div class="scanner-panel hover-trigger" onclick="openPage('sciml')">
+                    <div class="panel-title">Scientific ML</div><div class="panel-sub">Fluid Dynamics (CFD)</div>
+                    <p class="panel-details">Proper Orthogonal Decomposition (POD) for turbulence prediction.</p>
+                </div>
+                <div class="scanner-panel hover-trigger" onclick="openPage('mirai')">
+                    <div class="panel-title">Club Mirai</div><div class="panel-sub">Pasupatha Dept. Head</div>
+                    <p class="panel-details">Leading Embedded Systems Architecture & Control Logic.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+             <span class="label">Field Operations</span>
+             <div class="ops-grid">
+                 <div class="ops-column">
+                     <div class="ops-header">EVENTS APPEARED</div>
+                     <div class="project-row hover-trigger" onclick="openPage('ieee')">
+                         <div><div class="p-name">IEEE ICRM 2025</div><div class="p-stack">AMRITA PURI</div></div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                     </div>
+                     <div class="project-row hover-trigger" onclick="openPage('asme')">
+                         <div><div class="p-name">ASME EFx</div><div class="p-stack">CBIT HYDERABAD</div></div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                     </div>
+                     <div class="project-row hover-trigger" onclick="openPage('qiskit')">
+                         <div><div class="p-name">Qiskit Fall Fest</div><div class="p-stack">AMRITA PURI</div></div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                     </div>
+                 </div>
+
+                 <div class="ops-column">
+                     <div class="ops-header">INTERNSHIPS</div>
+                     <div class="project-row hover-trigger" onclick="openPage('inamigos')">
+                         <div><div class="p-name">InAmigos Foundation</div><div class="p-stack">GRAPHIC DESIGN</div></div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+        <section>
+            <span class="label">Credentials</span>
+            <div class="ops-grid">
+                <div class="ops-column">
+                    <div class="ops-header">SPACE & DATA ANALYTICS (ISRO/IIRS)</div>
+                    <div class="project-row">
+                        <div><div class="p-name">Remote Sensing</div><div class="p-stack">CROP FORECASTING</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">Space Science Data</div><div class="p-stack">ARCHIVAL & ACCESS</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">Ecological Modelling</div><div class="p-stack">SIMULATION TRENDS</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">Urban Geospatial</div><div class="p-stack">ENV. MODELLING</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                </div>
+                
+                <div class="ops-column">
+                    <div class="ops-header">CORE AI & DESIGN</div>
+                    <div class="project-row">
+                        <div><div class="p-name">Supervised ML</div><div class="p-stack">DEEPLEARNING.AI</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">Dynamic UI Dev</div><div class="p-stack">GOOGLE</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">Graphic Design</div><div class="p-stack">XBOX / COURSERA</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <span class="label">Communication</span>
+            <h1 style="font-size: 5vw;">Initialize<br>Connection</h1>
+            <div class="contact-grid">
+                <a href="mailto:saratchandranallabati@gmail.com" class="contact-link hover-trigger"><span>Email</span><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/saratchandranallabati" class="contact-link hover-trigger" target="_blank"><span>LinkedIn</span><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Sarat-2007" class="contact-link hover-trigger" target="_blank"><span>GitHub</span><i class="fab fa-github"></i></a>
+            </div>
+        </section>
+
+        <div class="sys-footer">
+            <div>SYSTEM STATUS: ONLINE</div>
+            <div>SARAT CHANDRA.N &copy; 2025</div>
+        </div>
+
+    </div>
+
+
+    <div id="page-voter" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: VOTER</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Secure Digital Ballot</div>
+            <div class="detail-meta"><span>YEAR: 2024 (SEM 1)</span> <span>STATUS: COMPLETED</span> <span>LANG: C</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE CHALLENGE</span>
+                    <p>Standard web-based voting applications are vulnerable to Cross-Site Scripting (XSS) and database injection. The objective was to build a tamper-proof voting engine that operates in an isolated shell environment, eliminating surface area for web-based attacks.</p>
+                    
+                    <span class="detail-section-header">THE ARCHITECTURE</span>
+                    <p>The system is architected around a deterministic state machine written in pure C. It utilizes raw memory management (Structs) to handle voter sessions and candidate registries. To ensure auditability, the system implements a custom File I/O persistence layer. Every vote cast is serialized and locked into a binary file, ensuring that data survives power cycles and program termination without relying on heavy external SQL databases.</p>
+                    
+                    <a href="https://github.com/Sarat-2007/Secure-Digital-Ballot" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">TECH STACK</div>
+                    <ul class="tech-list">
+                        <li>C Language (Standard Lib)</li>
+                        <li>File Handling (Binary I/O)</li>
+                        <li>Structs & Memory Mgmt</li>
+                        <li>Deterministic Logic</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-gsm" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: GSM</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Industrial GSM Automation</div>
+            <div class="detail-meta"><span>HARDWARE: A7670C</span> <span>PROTOCOLS: SMS/GPRS</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE PROBLEM</span>
+                    <p>Industrial machinery often operates in remote agricultural fields where Wi-Fi and Bluetooth connectivity are non-existent. Traditional automation solutions fail in these off-grid environments.</p>
+                    
+                    <span class="detail-section-header">THE SOLUTION</span>
+                    <p>This architecture utilizes the A7670C GSM module to establish a telemetry link over the cellular network. The system parses incoming SMS text strings using a custom command interpreter on the microcontroller. It validates the command syntax and triggers high-voltage relays to actuate pumps or motors. This approach guarantees control capability over infinite distances, provided there is basic cellular signal.</p>
+                    
+                    <a href="https://github.com/Sarat-2007/Industrial-GSM-Automation" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <ul class="tech-list">
+                        <li>A7670C GSM Module</li>
+                        <li>Arduino / ESP32</li>
+                        <li>AT Command Parsing</li>
+                        <li>4-Channel Relay Control</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-vital" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: VITALS</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Real-Time Biotelemetry</div>
+            <div class="detail-meta"><span>LATENCY: < 200ms</span> <span>PLATFORM: BLYNK</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">SIGNAL PROCESSING</span>
+                    <p>The system interfaces with a MAX30102 oximetry sensor to capture raw photoplethysmogram (PPG) data. A microcontroller processes these analog signals to filter out noise and compute Heart Rate and SpO2 levels in real-time.</p>
+                    
+                    <span class="detail-section-header">CLOUD TELEMETRY</span>
+                    <p>Instead of local storage, the processed vitals are serialized into lightweight packets and transmitted via the ESP8266 Wi-Fi module to the Blynk IoT Cloud. This architecture allows medical professionals to visualize patient status on a remote dashboard with sub-second latency, facilitating immediate response to critical events.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <ul class="tech-list">
+                        <li>ESP8266 (NodeMCU)</li>
+                        <li>MAX30102 Oximeter</li>
+                        <li>Real-time Data Stream</li>
+                        <li>Blynk IoT Cloud</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-rover" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: ROVER</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Bluetooth Mobile Robot</div>
+            <div class="detail-meta"><span>YEAR: 2024</span> <span>CONTROL: WIRELESS UART</span> <span>LANG: C++</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">CONTROL THEORY</span>
+                    <p>Standard hobbyist robots use "blocking" delays, causing the processor to freeze during movement, leading to jerky controls. I implemented a non-blocking asynchronous control loop using `millis()`. This allows the processor to handle motor PWM generation and Bluetooth UART communication simultaneously.</p>
+                    
+                    <span class="detail-section-header">VELOCITY PROFILING</span>
+                    <p>To prevent mechanical wear and ensure smooth motion, I developed a "Soft-Start" algorithm. Instead of jumping from 0 to 100% power instantly, the firmware ramps up the Pulse Width Modulation (PWM) duty cycle linearly over time intervals. This creates a fluid velocity profile similar to industrial AGVs and enhances stability.</p>
+                    
+                    <a href="https://github.com/Sarat-2007/Bluetooth-Mobile-Robot" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">TECH STACK</div>
+                    <ul class="tech-list">
+                        <li>Arduino Uno R3</li>
+                        <li>HC-05 Bluetooth Module</li>
+                        <li>L298N H-Bridge</li>
+                        <li>Non-Blocking C++ Kernel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-research" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">PUBLICATION</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Complexity in Autonomy</div>
+            <div class="detail-meta"><span>CONF: IEEE ICRM 2025</span> <span>TOPIC: EDGE ROBOTICS</span></div>
+            <div class="detail-body">
+                <div style="grid-column: span 2;">
+                    <span class="detail-section-header">THE BOTTLENECK</span>
+                    <p>In edge robotics, the "See-Think-Act" loop is often blocked by heavy vision processing. This paper provides a rigorous latency analysis of running OpenCV lane detection on a Raspberry Pi 4B, revealing a critical "blind time" of 30-100ms where the robot operates without sensory data.</p>
+                    
+                    <span class="detail-section-header">ARCHITECTURAL PROPOSAL</span>
+                    <p>We propose a multi-threaded architecture that decouples the Vision Loop (high latency) from the Motor Control Loop (real-time). By using shared memory buffers and mutex locks, the robot maintains stable motion control even while waiting for the next frame of vision data, significantly improving safety in unstructured environments.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-sciml" class="detail-layer">
+        <div class="detail-header"><div class="logo">FOCUS: SciML</div><div class="close-btn hover-trigger" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">Data-Driven Fluids</div>
+            <div class="detail-meta"><span>DOMAIN: CFD & AI</span> <span>METHOD: POD/ROM</span></div>
+            <div class="detail-body">
+                <div> <span class="detail-section-header">THE COMPUTATIONAL BOTTLENECK</span>
+                    <p>Solving the non-linear Navier-Stokes equations for turbulent flows via Direct Numerical Simulation (DNS) or Large Eddy Simulation (LES) is computationally prohibitive. High-fidelity simulations can take hours or days to converge, creating a major bottleneck for design optimization cycles and real-time control applications.</p>
+
+                    <span class="detail-section-header">METHODOLOGY: PROPER ORTHOGONAL DECOMPOSITION (POD)</span>
+                    <p>This research leverages Proper Orthogonal Decomposition (POD) to extract the dominant coherent structures (energy-containing modes) from flow field data. By performing Singular Value Decomposition (SVD) on the snapshot matrix, we identify a low-dimensional subspace that captures the majority of the flow's kinetic energy.</p>
+
+                    <span class="detail-section-header">REDUCED ORDER MODELING (ROM)</span>
+                    <p>We construct Reduced Order Models (ROMs) by projecting the governing equations onto these POD modes. The result is a surrogate model that retains the essential physics while reducing the degrees of freedom from millions to just a few dozen. This achieves computational speedups of O(10^3), enabling near-instantaneous flow prediction suitable for Digital Twins and active flow control.</p>
+
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="page-mirai" class="detail-layer">
+        <div class="detail-header"><div class="logo">FOCUS: MIRAI</div><div class="close-btn" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">Team Pasupatha</div>
+            <div class="detail-meta"><span>ROLE: HEAD OF EMBEDDED SYSTEMS</span> <span>DEPT: PASUPATHA</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">LEADERSHIP ROLE</span>
+                    <p>As the Head Engineer for the 'Pasupatha' department within Club Mirai, I lead the design and implementation of the entire embedded systems architecture for our companion robots. This involves overseeing the integration of sensors (LiDAR, IMU, Ultrasonic), power distribution units, and microcontrollers.</p>
+                    
+                    <span class="detail-section-header">TECHNICAL SCOPE</span>
+                    <p>My responsibility extends beyond simple kinematics. I architect the communication bus (I2C/UART/CAN) that links the high-level ROS navigation stack (running on SBCs like Raspberry Pi/Jetson) with the low-level motor controllers (Arduino/STM32). I ensure synchronization between the navigation goals and the physical actuation of the robot.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-ieee" class="detail-layer">
+        <div class="detail-header"><div class="logo">LOG: IEEE ICRM</div><div class="close-btn hover-trigger" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">IEEE ICRM 2025</div>
+            <div class="detail-meta"><span>LOCATION: AMRITA PURI</span> <span>ROLE: PRESENTER</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">CONFERENCE OVERVIEW</span>
+                    <p>Presented the research paper titled "Complexity in Autonomy" at the International Conference on Robotics and Mechatronics (ICRM) 2025. The presentation focused on the architectural trade-offs in edge computing for small-scale autonomous agents.</p>
+                    
+                    <span class="detail-section-header">IMPACT</span>
+                    <p>The work highlighted the critical "blind time" in single-threaded robotic vision systems and proposed a novel multi-threaded solution. Engaged with industry experts on the future of real-time operating systems (RTOS) in consumer robotics.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-qiskit" class="detail-layer">
+        <div class="detail-header"><div class="logo">LOG: QISKIT</div><div class="close-btn hover-trigger" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">Qiskit Fall Fest</div>
+            <div class="detail-meta"><span>LOCATION: AMRITA PURI</span> <span>ROLE: HACKATHON SOLVER</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE CHALLENGE</span>
+                    <p>The hackathon presented complex problems regarding quantum circuit optimization and state preparation using IBM's Qiskit framework.</p>
+                    
+                    <span class="detail-section-header">THE SOLUTION</span>
+                    <p>I successfully navigated the challenge by integrating Generative AI (LLMs) into the workflow. By leveraging AI to generate boilerplate Qiskit code and optimize gate sequences, I was able to focus on the high-level quantum logic, solving the hackathon problem statement efficiently.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-asme" class="detail-layer">
+        <div class="detail-header"><div class="logo">LOG: ASME EFX</div><div class="close-btn hover-trigger" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">ASME EFx</div>
+            <div class="detail-body">
+                <p>Participated in the ASME Engineering Festival (EFx) held at CBIT Hyderabad. Engaged in mechanical design challenges and rapid prototyping workshops.</p>
+                <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-inamigos" class="detail-layer">
+        <div class="detail-header"><div class="logo">LOG: INAMIGOS</div><div class="close-btn hover-trigger" onclick="closePage()">Return</div></div>
+        <div class="detail-content">
+            <div class="detail-title">InAmigos Foundation</div>
+            <div class="detail-meta"><span>ROLE: GRAPHIC DESIGNER</span> <span>STATUS: COMPLETED</span> <span>DATE: AUG 2025</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">VISUAL COMMUNICATION</span>
+                    <p>Orchestrated the creation of digital assets for non-profit campaigns, focusing on fundraising and public outreach. Designed thematic posters and dynamic video reels that significantly boosted user engagement on social media channels.</p>
+                    
+                    <span class="detail-section-header">DESIGN WORKFLOW</span>
+                    <p>Employed a professional toolchain centering on Adobe Photoshop for complex image manipulation. Integrated AI-driven design tools to optimize workflow efficiency and create compelling visual narratives that resonate with donor audiences.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">SKILLS DEPLOYED</div>
+                    <ul class="tech-list">
+                        <li>Adobe Photoshop</li>
+                        <li>Canva / Figma</li>
+                        <li>AI Content Generation</li>
+                        <li>Visual Storytelling</li>
+                        <li>Social Media Marketing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-classified" class="detail-layer">
+        <div class="alert-box">
+            <div class="logo" style="color:var(--accent); margin-bottom:20px; font-size: 2rem;">SYSTEM NOTICE</div>
+            <p style="font-family:'Space Mono'; font-size:1.1rem; color:#fff; line-height: 1.6;">
+                MAJOR SYSTEMS UNDER CONSTRUCTION.<br><br>
+                <span style="color: #888;">REASON:</span> Academic Clearance Level 4/8.<br>
+                Deep-system integration requires advanced semester completion. Current focus remains on foundational mastery and minor system modules.
+            </p>
+            <div class="close-btn hover-trigger" onclick="closePage()" style="margin-top:40px; display:inline-block; cursor: pointer;">ACKNOWLEDGE</div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- CURSOR ---
+        const cursor = document.getElementById('cursor');
+        const triggers = document.querySelectorAll('.hover-trigger');
+        const body = document.body;
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Re-bind hover logic function (for dynamic use)
+        function bindHovers() {
+            document.querySelectorAll('.hover-trigger').forEach(t => {
+                t.addEventListener('mouseenter', () => body.classList.add('active-hover'));
+                t.addEventListener('mouseleave', () => body.classList.remove('active-hover'));
+            });
+        }
+        bindHovers();
+
+        // --- NAVIGATION LOGIC ---
+        function jump(index) {
+            document.getElementById('scroller').scrollTo({ top: window.innerHeight * index, behavior: 'smooth' });
+        }
+
+        // --- PAGE SYSTEM ---
+        function openPage(id) {
+            const page = document.getElementById('page-' + id);
+            if(page) {
+                page.classList.add('open');
+                body.classList.add('detail-active');
+            }
+        }
+
+        function closePage() {
+            // 1. Close all pages
+            document.querySelectorAll('.detail-layer').forEach(p => p.classList.remove('open'));
+            // 2. Bring main content back
+            body.classList.remove('detail-active');
+        }
+
+    </script>
+</body>
+</html>
