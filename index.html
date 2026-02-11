@@ -261,7 +261,7 @@
     }
 
     .repo-btn {
-        display: inline-block; margin-top: 30px; font-family: 'Oswald'; font-size: 0.9rem; color: #000; background: var(--accent); border: 1px solid var(--accent); padding: 10px 25px; text-transform: uppercase; text-decoration: none; transition: 0.3s; font-weight: 500;
+        display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; font-family: 'Oswald'; font-size: 0.9rem; color: #000; background: var(--accent); border: 1px solid var(--accent); padding: 10px 25px; text-transform: uppercase; text-decoration: none; transition: 0.3s; font-weight: 500;
     }
     .repo-btn:hover { background: transparent; color: var(--accent); box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
 
@@ -415,19 +415,19 @@
             <div style="border-top: 1px solid #333;">
                 <div class="project-row hover-trigger" onclick="openPage('voter')">
                     <div><div class="p-name">Secure Voter</div><div class="p-stack">STRUCTS / FILE I/O / LOGIC</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
                 </div>
                 <div class="project-row hover-trigger" onclick="openPage('gsm')">
                     <div><div class="p-name">GSM Automation</div><div class="p-stack">A7670C / HARDWARE RELAYS</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-tower-cell" style="margin-left:8px"></i></div>
                 </div>
                 <div class="project-row hover-trigger" onclick="openPage('vital')">
                     <div><div class="p-name">IoT Vitals</div><div class="p-stack">ESP8266 / MAX30102</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-heart-pulse" style="margin-left:8px"></i></div>
                 </div>
                 <div class="project-row hover-trigger" onclick="openPage('rover')">
                     <div><div class="p-name">Bluetooth Rover</div><div class="p-stack">ARDUINO / KINEMATICS</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS</div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-car-side" style="margin-left:8px"></i></div>
                 </div>
             </div>
         </section>
@@ -437,7 +437,7 @@
             <div class="research-hero hover-trigger" onclick="openPage('research')">
                 <h2 style="font-style: normal; text-transform: uppercase;">Complexity in Autonomy</h2>
                 <p style="font-style: italic; color: #fff;">"Small Scale Raspberry Pi Based Autonomous Car: A Practical Guide to Understand Complexity"</p>
-                <p style="margin-top: 20px; font-family: 'Oswald'; border-bottom: 1px solid var(--accent); display: inline-block;">READ ABSTRACT</p>
+                <p style="margin-top: 20px; font-family: 'Oswald'; border-bottom: 1px solid var(--accent); display: inline-block;">READ ABSTRACT <i class="fas fa-book-open" style="margin-left:5px"></i></p>
             </div>
         </section>
 
@@ -462,15 +462,15 @@
                      <div class="ops-header">EVENTS APPEARED</div>
                      <div class="project-row hover-trigger" onclick="openPage('ieee')">
                          <div><div class="p-name">IEEE ICRM 2025</div><div class="p-stack">AMRITA PURI</div></div>
-                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG <i class="fas fa-scroll"></i></div>
                      </div>
                      <div class="project-row hover-trigger" onclick="openPage('asme')">
                          <div><div class="p-name">ASME EFx</div><div class="p-stack">CBIT HYDERABAD</div></div>
-                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG <i class="fas fa-scroll"></i></div>
                      </div>
                      <div class="project-row hover-trigger" onclick="openPage('qiskit')">
                          <div><div class="p-name">Qiskit Fall Fest</div><div class="p-stack">AMRITA PURI</div></div>
-                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG <i class="fas fa-scroll"></i></div>
                      </div>
                  </div>
 
@@ -478,7 +478,7 @@
                      <div class="ops-header">INTERNSHIPS</div>
                      <div class="project-row hover-trigger" onclick="openPage('inamigos')">
                          <div><div class="p-name">InAmigos Foundation</div><div class="p-stack">GRAPHIC DESIGN</div></div>
-                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG</div>
+                         <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: var(--accent);">VIEW LOG <i class="fas fa-briefcase"></i></div>
                      </div>
                  </div>
              </div>
@@ -491,19 +491,19 @@
                     <div class="ops-header">SPACE & DATA ANALYTICS (ISRO/IIRS)</div>
                     <div class="project-row">
                         <div><div class="p-name">Remote Sensing</div><div class="p-stack">CROP FORECASTING</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-satellite"></i></div>
                     </div>
                     <div class="project-row">
                         <div><div class="p-name">Space Science Data</div><div class="p-stack">ARCHIVAL & ACCESS</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-database"></i></div>
                     </div>
                     <div class="project-row">
                         <div><div class="p-name">Ecological Modelling</div><div class="p-stack">SIMULATION TRENDS</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-leaf"></i></div>
                     </div>
                     <div class="project-row">
                         <div><div class="p-name">Urban Geospatial</div><div class="p-stack">ENV. MODELLING</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-city"></i></div>
                     </div>
                 </div>
                 
@@ -511,15 +511,15 @@
                     <div class="ops-header">CORE AI & DESIGN</div>
                     <div class="project-row">
                         <div><div class="p-name">Supervised ML</div><div class="p-stack">DEEPLEARNING.AI</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-brain"></i></div>
                     </div>
                     <div class="project-row">
                         <div><div class="p-name">Dynamic UI Dev</div><div class="p-stack">GOOGLE</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-code"></i></div>
                     </div>
                     <div class="project-row">
                         <div><div class="p-name">Graphic Design</div><div class="p-stack">XBOX / COURSERA</div></div>
-                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED</div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">VERIFIED <i class="fas fa-palette"></i></div>
                     </div>
                 </div>
             </div>
@@ -672,16 +672,19 @@
         </div>
         <div class="detail-content">
             <div class="detail-title">Complexity in Autonomy</div>
-            <div class="detail-meta"><span>CONF: IEEE ICRM 2025</span> <span>TOPIC: EDGE ROBOTICS</span></div>
+            <div class="detail-meta"><span>CONF: IEEE ICRM 2025</span> <span>STATUS: PUBLISHED (NOV 2025)</span></div>
             <div class="detail-body">
                 <div style="grid-column: span 2;">
-                    <span class="detail-section-header">THE BOTTLENECK</span>
-                    <p>In edge robotics, the "See-Think-Act" loop is often blocked by heavy vision processing. This paper provides a rigorous latency analysis of running OpenCV lane detection on a Raspberry Pi 4B, revealing a critical "blind time" of 30-100ms where the robot operates without sensory data.</p>
+                    <span class="detail-section-header">OVERVIEW</span>
+                    <p>This work explores the architectural complexities of building small-scale autonomous vehicles using Raspberry Pi. It provides a practical guide for engineers to understand the interplay between hardware constraints and software efficiency, specifically focusing on TCP/IP protocols and real-time communication libraries.</p>
                     
-                    <span class="detail-section-header">ARCHITECTURAL PROPOSAL</span>
-                    <p>We propose a multi-threaded architecture that decouples the Vision Loop (high latency) from the Motor Control Loop (real-time). By using shared memory buffers and mutex locks, the robot maintains stable motion control even while waiting for the next frame of vision data, significantly improving safety in unstructured environments.</p>
+                    <span class="detail-section-header">AUTHORS</span>
+                    <p>Nallabati Venkata Durga Sai Sarat Chandra, Nunna Mokshith, Asha C A, Sreekumar P. C</p>
                     
-                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                    <span class="detail-section-header">TECHNICAL SCOPE</span>
+                    <p>The paper reviews Python TCP/IP libraries (socket, asyncio, Twisted, Scapy) and their implementation in differential-drive mobile robots. It discusses ethology-inspired action selection mechanisms and the integration of ultrasonic sensor arrays for precision distance measurement in automotive prototypes.</p>
+                    
+                    <a href="https://www.researchgate.net/publication/400198763_Small_Scale_Raspberry_Pi_Based_Autonomous_Car_A_Practical_Guide_to_Understand_Complexity" class="repo-btn hover-trigger" target="_blank">VIEW ON RESEARCHGATE <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
         </div>
@@ -740,7 +743,7 @@
                     <span class="detail-section-header">IMPACT</span>
                     <p>The work highlighted the critical "blind time" in single-threaded robotic vision systems and proposed a novel multi-threaded solution. Engaged with industry experts on the future of real-time operating systems (RTOS) in consumer robotics.</p>
                     
-                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                    <a href="https://www.researchgate.net/publication/400198763_Small_Scale_Raspberry_Pi_Based_Autonomous_Car_A_Practical_Guide_to_Understand_Complexity" class="repo-btn hover-trigger" target="_blank">VIEW PUBLICATION <i class="fas fa-paper-plane"></i></a>
                 </div>
             </div>
         </div>
@@ -759,7 +762,10 @@
                     <span class="detail-section-header">THE SOLUTION</span>
                     <p>I successfully navigated the challenge by integrating Generative AI (LLMs) into the workflow. By leveraging AI to generate boilerplate Qiskit code and optimize gate sequences, I was able to focus on the high-level quantum logic, solving the hackathon problem statement efficiently.</p>
                     
-                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                    <div style="display:flex; gap:15px">
+                        <a href="https://lnkd.in/gK_uamix" class="repo-btn hover-trigger" target="_blank">VIEW LINKEDIN POST <i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">GITHUB ARCHIVE <i class="fab fa-github"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
