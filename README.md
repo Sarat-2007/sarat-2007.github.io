@@ -1,4 +1,11 @@
+<div align="center">
+  <img src="preview.png" alt="Portfolio Banner" width="100%" />
+</div>
+
+<br/>
+
 # 🌐 Personal Portfolio & Digital Showcase
+
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live_Site-00a3ff?style=for-the-badge&logo=google-chrome&logoColor=white)](https://sarat-2007.github.io/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
