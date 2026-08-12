@@ -38,8 +38,8 @@
         --keyword-color: var(--bg);
         --p-color: #444;
         --panel-hover: rgba(0,0,0,0.03);
-        --cursor-color: var(--bg);
-        --cursor-mix: normal;
+        --cursor-color: #fff;
+        --cursor-mix: difference;
     }
 
 
@@ -394,9 +394,24 @@
 
         <section>
             <span class="label">Major Architectures</span>
-            <h2>System Under Development</h2>
-            <div class="major-placeholder hover-trigger" onclick="openPage('classified')">
-                <div class="major-text">[ CLASSIFIED ]<br><span style="font-size: 1rem; color: var(--keyword-color); opacity: 0.5;">CLICK TO ACCESS LOGS</span></div>
+            <h2>Core Innovations</h2>
+            <div style="border-top: 1px solid var(--border-color);">
+                <div class="project-row hover-trigger" onclick="openPage('evolution')">
+                    <div><div class="p-name">Evolution Edge</div><div class="p-stack">ROCm 6.x / ONNX Runtime</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('piml')">
+                    <div><div class="p-name">PIML Diagnostic</div><div class="p-stack">SMOTE / Optuna / SHAP</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-industry" style="margin-left:8px"></i></div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('rheology')">
+                    <div><div class="p-name">Digital Twin Rheology</div><div class="p-stack">PINN / MULTI-FIDELITY CFD</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-water" style="margin-left:8px"></i></div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('classified')">
+                    <div><div class="p-name">[ CLASSIFIED ]</div><div class="p-stack">SYSTEM UNDER DEVELOPMENT</div></div>
+                    <div style="font-family: 'Oswald';">VIEW LOGS <i class="fas fa-lock" style="margin-left:8px"></i></div>
+                </div>
             </div>
         </section>
 
@@ -448,18 +463,6 @@
             <span class="label">Embedded Modules</span>
             <h2>Minor Systems</h2>
             <div style="border-top: 1px solid var(--border-color);">
-                <div class="project-row hover-trigger" onclick="openPage('evolution')">
-                    <div><div class="p-name">Evolution Edge</div><div class="p-stack">ROCm 6.x / ONNX Runtime</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
-                </div>
-                <div class="project-row hover-trigger" onclick="openPage('piml')">
-                    <div><div class="p-name">PIML Diagnostic</div><div class="p-stack">SMOTE / Optuna / SHAP</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-industry" style="margin-left:8px"></i></div>
-                </div>
-                <div class="project-row hover-trigger" onclick="openPage('rheology')">
-                    <div><div class="p-name">Digital Twin Rheology</div><div class="p-stack">PINN / MULTI-FIDELITY CFD</div></div>
-                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-water" style="margin-left:8px"></i></div>
-                </div>
                 <div class="project-row hover-trigger" onclick="openPage('voter')">
                     <div><div class="p-name">Secure Voter</div><div class="p-stack">STRUCTS / FILE I/O / LOGIC</div></div>
                     <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
