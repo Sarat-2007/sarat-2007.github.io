@@ -9,12 +9,39 @@
     /* --- 1. FONTS --- */
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
 
+
     :root {
         --bg: #050505;
         --text: #e1e1e1;
         --accent: #FF3333; /* Aerospace Orange */
         --panel-bg: #0a0a0a;
+        --border-color: #333;
+        --border-light: rgba(255,255,255,0.05);
+        --sidebar-bg: rgba(5,5,5,0.2);
+        --header-bg: rgba(5,5,5,0.9);
+        --keyword-color: var(--keyword-color);
+        --p-color: var(--p-color);
+        --panel-hover: rgba(255,255,255,0.02);
+        --cursor-color: var(--keyword-color);
+        --cursor-mix: difference;
     }
+
+    body.light-mode {
+        --bg: #fdfdfd;
+        --text: #1a1a1a;
+        --accent: #d32f2f;
+        --panel-bg: #ffffff;
+        --border-color: #ddd;
+        --border-light: rgba(0,0,0,0.05);
+        --sidebar-bg: rgba(255,255,255,0.8);
+        --header-bg: rgba(255,255,255,0.9);
+        --keyword-color: var(--bg);
+        --p-color: #444;
+        --panel-hover: rgba(0,0,0,0.03);
+        --cursor-color: var(--bg);
+        --cursor-mix: normal;
+    }
+
 
     * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
@@ -38,7 +65,7 @@
 
     /* --- 3. CURSOR --- */
     #cursor {
-        position: fixed; width: 60px; height: 60px; background: #fff; border-radius: 50%;
+        position: fixed; width: 60px; height: 60px; background: var(--keyword-color); border-radius: 50%;
         transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
         mix-blend-mode: difference; transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
     }
@@ -51,7 +78,7 @@
         display: flex; justify-content: space-between; align-items: center; z-index: 1000;
         mix-blend-mode: difference;
     }
-    .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; color: #fff; }
+    .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--keyword-color); }
     .nav-list { display: flex; gap: 30px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
     .nav-item { opacity: 0.6; transition: 0.3s; position: relative; cursor: none; text-transform: capitalize; }
     .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
@@ -68,18 +95,18 @@
         justify-content: center;
         align-items: center;
         z-index: 1500;
-        border-right: 1px solid rgba(255,255,255,0.05);
-        background: rgba(5,5,5,0.2);
+        border-right: 1px solid var(--border-light);
+        background: var(--sidebar-bg);
         backdrop-filter: blur(2px);
     }
     .sidebar-line {
         width: 1px;
         height: 100px;
-        background: rgba(255,255,255,0.2);
+        background: var(--border-color);
         margin: 20px 0;
     }
     .social-icon {
-        color: #fff;
+        color: var(--keyword-color);
         font-size: 1.2rem;
         margin: 15px 0;
         opacity: 0.5;
@@ -114,20 +141,20 @@
 
     section {
         height: 100vh; width: 100%; scroll-snap-align: start; display: flex; flex-direction: column;
-        justify-content: center; padding: 0 10vw; position: relative; border-bottom: 1px solid rgba(255,255,255,0.05); overflow: hidden;
+        justify-content: center; padding: 0 10vw; position: relative; border-bottom: 1px solid var(--border-light); overflow: hidden;
     }
 
     /* TYPOGRAPHY */
     .label { font-family: 'Oswald'; font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: block; }
     h1 { font-family: 'Oswald'; font-size: 6vw; text-transform: uppercase; line-height: 0.9; font-weight: 500; }
     h2 { font-family: 'Cormorant Garamond'; font-size: 3.5vw; font-style: italic; line-height: 1; margin-bottom: 30px; }
-    p { font-family: 'Cormorant Garamond'; font-size: 1.4rem; line-height: 1.5; max-width: 650px; color: #bbb; }
-    .keyword { border-bottom: 1px solid #fff; color: #fff; transition: 0.3s; display: inline-block; }
+    p { font-family: 'Cormorant Garamond'; font-size: 1.4rem; line-height: 1.5; max-width: 650px; color: var(--p-color); }
+    .keyword { border-bottom: 1px solid var(--keyword-color); color: var(--keyword-color); transition: 0.3s; display: inline-block; }
     .keyword:hover { color: var(--accent); border-color: var(--accent); transform: skewX(-10deg); }
 
     /* --- COMPONENTS --- */
     .major-placeholder {
-        width: 100%; height: 50vh; border: 1px dashed rgba(255,255,255,0.2);
+        width: 100%; height: 50vh; border: 1px dashed var(--border-color);
         display: flex; justify-content: center; align-items: center; position: relative;
         background: radial-gradient(circle, rgba(255,51,51,0.05) 0%, transparent 70%); transition: 0.3s;
     }
@@ -137,25 +164,25 @@
 
     .project-row {
         display: flex; justify-content: space-between; align-items: baseline; padding: 2vh 0; 
-        border-bottom: 1px solid #333; transition: 0.4s;
+        border-bottom: 1px solid var(--border-color); transition: 0.4s;
     }
-    .project-row:hover { padding-left: 20px; background: #fff; color: #000; }
+    .project-row:hover { padding-left: 20px; background: var(--keyword-color); color: var(--bg); }
     .p-name { font-family: 'Oswald'; font-size: 1.6rem; text-transform: uppercase; } 
     .p-stack { font-family: 'Oswald'; font-size: 0.75rem; margin-top: 2px; opacity: 0.7; }
 
     .research-hero { border-left: 4px solid var(--accent); padding-left: 40px; transition: 0.3s; position: relative; }
     .research-hero:hover { padding-left: 60px; }
 
-    .scanner-container { display: flex; width: 100%; height: 50vh; border: 1px solid #333; overflow: hidden; } 
-    .scanner-panel { flex: 1; position: relative; padding: 40px; border-right: 1px solid #333; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; justify-content: center; }
-    .scanner-panel:hover { flex: 2; opacity: 1; background: rgba(255,255,255,0.02); }
+    .scanner-container { display: flex; width: 100%; height: 50vh; border: 1px solid var(--border-color); overflow: hidden; } 
+    .scanner-panel { flex: 1; position: relative; padding: 40px; border-right: 1px solid var(--border-color); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; justify-content: center; }
+    .scanner-panel:hover { flex: 2; opacity: 1; background: var(--panel-hover); }
     .panel-title { font-family: 'Oswald'; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 10px; }
     .panel-sub { font-family: 'Cormorant Garamond'; font-style: italic; font-size: 1.2rem; margin-bottom: 30px; }
     .panel-details { font-size: 1.1rem; max-width: 500px; }
 
     .ops-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; 
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
         gap: 60px; 
         width: 100%;
         margin-top: 20px;
@@ -175,8 +202,8 @@
         margin-top: 20px;
     }
     .toolkit-category {
-        background: rgba(255,255,255,0.03); 
-        border: 1px solid #222;
+        background: var(--panel-hover); 
+        border: 1px solid var(--border-color);
         padding: 25px;
         transition: 0.3s;
     }
@@ -190,40 +217,40 @@
         font-size: 1rem;
         margin-bottom: 15px;
         letter-spacing: 2px;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid var(--border-color);
         padding-bottom: 5px;
     }
     .toolkit-list {
         list-style: none;
         font-family: 'Space Mono', monospace;
         font-size: 0.85rem;
-        color: #bbb;
+        color: var(--p-color);
     }
     .toolkit-list li {
         margin-bottom: 0;
         padding: 8px 0; 
-        border-bottom: 1px solid #1a1a1a; 
+        border-bottom: 1px solid var(--border-color); 
         display: flex; justify-content: space-between;
         transition: 0.2s;
     }
     .toolkit-list li:last-child { border-bottom: none; }
     .toolkit-list li:hover {
-        color: #fff;
+        color: var(--keyword-color);
         padding-left: 5px; 
         text-shadow: 0 0 5px rgba(255,255,255,0.5);
     }
 
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; max-width: 800px; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; max-width: 800px; }
     .contact-link {
-        font-family: 'Oswald'; font-size: 2rem; color: #fff; text-decoration: none; border: 1px solid #333;
+        font-family: 'Oswald'; font-size: 2rem; color: var(--keyword-color); text-decoration: none; border: 1px solid var(--border-color);
         padding: 20px; transition: 0.3s; display: flex; justify-content: space-between; align-items: center;
     }
-    .contact-link:hover { background: #fff; color: #000; border-color: #fff; }
+    .contact-link:hover { background: var(--keyword-color); color: var(--bg); border-color: var(--keyword-color); }
 
     /* FOOTER */
     .sys-footer {
         padding: 40px 10vw;
-        border-top: 1px solid #333;
+        border-top: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         font-family: 'Space Mono';
@@ -240,28 +267,28 @@
     }
     .detail-layer.open { transform: translateX(0); }
     
-    .detail-header { padding: 30px 10vw; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+    .detail-header { padding: 30px 10vw; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
     
     .close-btn { font-family: 'Oswald'; font-size: 1rem; color: var(--accent); border: 1px solid var(--accent); padding: 10px 20px; text-transform: uppercase; transition: 0.3s; }
-    .close-btn:hover { background: var(--accent); color: #000; }
+    .close-btn:hover { background: var(--accent); color: var(--bg); }
     
     .detail-content { padding: 40px 10vw; max-width: 1400px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: all 0.6s ease 0.3s; }
     .detail-layer.open .detail-content { opacity: 1; transform: translateY(0); } 
 
     .detail-title { font-family: 'Oswald'; font-size: 3.5rem; text-transform: uppercase; line-height: 1; margin-bottom: 15px; }
-    .detail-meta { font-family: 'Space Mono', monospace; color: #888; margin-bottom: 40px; display: flex; gap: 40px; border-bottom: 1px solid #333; padding-bottom: 20px; font-size: 0.9rem; }
+    .detail-meta { font-family: 'Space Mono', monospace; color: #888; margin-bottom: 40px; display: flex; gap: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; font-size: 0.9rem; }
     .detail-body { font-family: 'Cormorant Garamond'; font-size: 1.5rem; line-height: 1.5; color: #ccc; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
     
     .tech-list { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--accent); list-style: none; }
-    .tech-list li { margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; transition: 0.3s; cursor: none;}
-    .tech-list li:hover { padding-left: 10px; color: #fff; text-shadow: 0 0 5px var(--accent); }
+    .tech-list li { margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; transition: 0.3s; cursor: none;}
+    .tech-list li:hover { padding-left: 10px; color: var(--keyword-color); text-shadow: 0 0 5px var(--accent); }
     
     .detail-section-header {
         font-family: 'Oswald'; color: var(--accent); font-size: 1.1rem; margin-top: 20px; margin-bottom: 8px; display: block; letter-spacing: 1px;
     }
 
     .repo-btn {
-        display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; font-family: 'Oswald'; font-size: 0.9rem; color: #000; background: var(--accent); border: 1px solid var(--accent); padding: 10px 25px; text-transform: uppercase; text-decoration: none; transition: 0.3s; font-weight: 500;
+        display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; font-family: 'Oswald'; font-size: 0.9rem; color: var(--bg); background: var(--accent); border: 1px solid var(--accent); padding: 10px 25px; text-transform: uppercase; text-decoration: none; transition: 0.3s; font-weight: 500;
     }
     .repo-btn:hover { background: transparent; color: var(--accent); box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
 
@@ -288,9 +315,10 @@
     @media (max-width: 768px) {
         .sidebar { width: 100%; height: 60px; top: auto; bottom: 0; left: 0; border-right: none; border-top: 1px solid rgba(255,255,255,0.1); flex-direction: row; justify-content: space-around; background: #000; }
         .sidebar-line, .sidebar-text { display: none; }
+        .mobile-theme-toggle { display: block; }
         .social-icon { margin: 0; font-size: 1.5rem; }
         .snap-container { padding-left: 0; padding-bottom: 70px; }
-        header { padding: 20px; background: rgba(5,5,5,0.9); }
+        header { padding: 20px; background: var(--header-bg); }
         .logo { font-size: 1.2rem; letter-spacing: 1px; }
         .nav-list { display: none; }
         h1 { font-size: 12vw; }
@@ -300,11 +328,14 @@
         .toolkit-container { grid-template-columns: 1fr; gap: 20px; } 
         .contact-grid { grid-template-columns: 1fr; }
         .detail-body { grid-template-columns: 1fr; gap: 30px; }
+        .mobile-theme-toggle { display: none; }
         /* MOBILE PADDING FIX */
+        section { height: auto; min-height: 100vh; justify-content: flex-start; padding-top: 100px; padding-bottom: 50px; }
+        .snap-container { scroll-snap-type: none; overflow-y: auto; } /* Disable snap on mobile for smoother reading */
         .detail-content { padding: 40px 20px 100px 20px; }
         
         .scanner-container { flex-direction: column; height: auto; }
-        .scanner-panel { border-right: none; border-bottom: 1px solid #333; height: 30vh; }
+        .scanner-panel { border-right: none; border-bottom: 1px solid var(--border-color); height: 30vh; }
         section { padding: 0 20px; }
         .detail-title { font-size: 2.5rem; }
         .detail-meta { flex-direction: column; gap: 10px; }
@@ -331,6 +362,7 @@
         <a href="https://www.linkedin.com/in/saratchandranallabati" class="social-icon hover-trigger" title="LinkedIn" target="_blank"><i class="fab fa-linkedin"></i></a>
         <a href="mailto:saratchandranallabati@gmail.com" class="social-icon hover-trigger" title="Email"><i class="fas fa-envelope"></i></a>
         <a href="resume.pdf" class="social-icon hover-trigger" title="Download Resume" target="_blank"><i class="fas fa-file-pdf"></i></a>
+        <a class="social-icon hover-trigger mobile-theme-toggle" title="Toggle Theme" onclick="toggleTheme()" style="cursor:pointer;"><i class="fas fa-sun" id="mobile-theme-icon"></i></a>
         <div class="sidebar-line"></div>
         <div class="sidebar-text">CONTACT</div>
     </div>
@@ -338,6 +370,8 @@
     <header>
         <div class="logo">SARAT CHANDRA.N<span style="color:var(--accent)">.</span></div>
         <div class="nav-list">
+            <div class="nav-item hover-trigger" id="theme-toggle" onclick="toggleTheme()" title="Toggle Theme"><i class="fas fa-sun"></i></div>
+            <div style="width: 1px; height: 20px; background: var(--border-color); margin: 0 10px; align-self: center;"></div>
             <div class="nav-item active" onclick="jump(0)">Identity</div>
             <div class="nav-item" onclick="jump(1)">Systems</div>
             <div class="nav-item" onclick="jump(2)">Modules</div>
@@ -362,7 +396,7 @@
             <span class="label">Major Architectures</span>
             <h2>System Under Development</h2>
             <div class="major-placeholder hover-trigger" onclick="openPage('classified')">
-                <div class="major-text">[ CLASSIFIED ]<br><span style="font-size: 1rem; color: #fff; opacity: 0.5;">CLICK TO ACCESS LOGS</span></div>
+                <div class="major-text">[ CLASSIFIED ]<br><span style="font-size: 1rem; color: var(--keyword-color); opacity: 0.5;">CLICK TO ACCESS LOGS</span></div>
             </div>
         </section>
 
@@ -387,8 +421,9 @@
                     <ul class="toolkit-list">
                         <li class="hover-trigger">C / C++ (Embedded)</li>
                         <li class="hover-trigger">Python (AI/Scripting)</li>
-                        <li class="hover-trigger">Supervised ML (Reg/Class)</li>
+                        <li class="hover-trigger">Physics-Informed ML (PINN)</li>
                         <li class="hover-trigger">SciML / CFD Basics</li>
+                        <li class="hover-trigger">ROCm / ONNX Runtime</li>
                         <li class="hover-trigger">IBM Qiskit / SQL</li>
                         <li class="hover-trigger">Linux / Bash</li>
                     </ul>
@@ -412,7 +447,19 @@
         <section>
             <span class="label">Embedded Modules</span>
             <h2>Minor Systems</h2>
-            <div style="border-top: 1px solid #333;">
+            <div style="border-top: 1px solid var(--border-color);">
+                <div class="project-row hover-trigger" onclick="openPage('evolution')">
+                    <div><div class="p-name">Evolution Edge</div><div class="p-stack">ROCm 6.x / ONNX Runtime</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('piml')">
+                    <div><div class="p-name">PIML Diagnostic</div><div class="p-stack">SMOTE / Optuna / SHAP</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-industry" style="margin-left:8px"></i></div>
+                </div>
+                <div class="project-row hover-trigger" onclick="openPage('rheology')">
+                    <div><div class="p-name">Digital Twin Rheology</div><div class="p-stack">PINN / MULTI-FIDELITY CFD</div></div>
+                    <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-water" style="margin-left:8px"></i></div>
+                </div>
                 <div class="project-row hover-trigger" onclick="openPage('voter')">
                     <div><div class="p-name">Secure Voter</div><div class="p-stack">STRUCTS / FILE I/O / LOGIC</div></div>
                     <div style="font-family: 'Oswald';">VIEW SPECS <i class="fas fa-microchip" style="margin-left:8px"></i></div>
@@ -436,7 +483,7 @@
             <span class="label">Academic Publication</span>
             <div class="research-hero hover-trigger" onclick="openPage('research')">
                 <h2 style="font-style: normal; text-transform: uppercase;">Complexity in Autonomy</h2>
-                <p style="font-style: italic; color: #fff;">"Small Scale Raspberry Pi Based Autonomous Car: A Practical Guide to Understand Complexity"</p>
+                <p style="font-style: italic; color: var(--keyword-color);">"Small Scale Raspberry Pi Based Autonomous Car: A Practical Guide to Understand Complexity"</p>
                 <p style="margin-top: 20px; font-family: 'Oswald'; border-bottom: 1px solid var(--accent); display: inline-block;">READ ABSTRACT <i class="fas fa-book-open" style="margin-left:5px"></i></p>
             </div>
         </section>
@@ -508,6 +555,26 @@
                 </div>
                 
                 <div class="ops-column">
+                    <div class="ops-header">ACHIEVEMENTS</div>
+                    <div class="project-row">
+                        <div><div class="p-name">IEEE IES Gen AI</div><div class="p-stack">TOP INTERNATIONAL TEAMS</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">AWARDED <i class="fas fa-trophy"></i></div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">NAEST</div><div class="p-stack">CLEARED 2 LEVELS (IAPT)</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">ACHIEVED <i class="fas fa-medal"></i></div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">ISRO-IIRS YUVIKA</div><div class="p-stack">NATIONAL MERIT SCREENING</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">SELECTED <i class="fas fa-rocket"></i></div>
+                    </div>
+                    <div class="project-row">
+                        <div><div class="p-name">MTSO Level 2</div><div class="p-stack">MATHS OLYMPIAD TOP TIER</div></div>
+                        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: #888;">QUALIFIED <i class="fas fa-award"></i></div>
+                    </div>
+                </div>
+                
+                <div class="ops-column" style="grid-column: span 1;">
                     <div class="ops-header">CORE AI & DESIGN</div>
                     <div class="project-row">
                         <div><div class="p-name">Supervised ML</div><div class="p-stack">DEEPLEARNING.AI</div></div>
@@ -543,6 +610,100 @@
     </div>
 
 
+    
+    <div id="page-evolution" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: EVOLUTION</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Self-Evolving Neural Bridge</div>
+            <div class="detail-meta"><span>DATE: 05/2026</span> <span>HARDWARE: RYZEN AI NPU / MI300X</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE ARCHITECTURE</span>
+                    <p>Engineered a hybrid AI pipeline utilizing ROCm 6.x and ONNX Runtime to orchestrate low-latency inference on Ryzen AI NPUs with symbolic confidence-based escalation to AMD Instinct MI300X clusters.</p>
+                    
+                    <span class="detail-section-header">ON-DEVICE LEARNING</span>
+                    <p>Implemented persistent on-device learning through knowledge distillation and PEFT-driven weight updates, bridging the gap between edge efficiency and cloud-scale intelligence.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">TECH STACK</div>
+                    <ul class="tech-list">
+                        <li>ROCm 6.x</li>
+                        <li>ONNX Runtime</li>
+                        <li>Knowledge Distillation</li>
+                        <li>PEFT</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-piml" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: DIAGNOSTIC</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Multi-Modal Industrial Diagnostic</div>
+            <div class="detail-meta"><span>DATE: 05/2026</span> <span>DOMAIN: PREDICTIVE MAINTENANCE</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE SOLUTION</span>
+                    <p>Engineered a Physics-Informed Machine Learning (PIML) framework combining mechanical heuristics and data-driven models to predict equipment failures.</p>
+                    
+                    <span class="detail-section-header">IMPACT</span>
+                    <p>Optimized with SMOTE and Optuna for an 85.2% recall and integrated with SHAP for actionable transparency, the simulated system demonstrated a 68% reduction in maintenance costs, saving an estimated $230,000 across a 2,000-machine fleet.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">TECH STACK</div>
+                    <ul class="tech-list">
+                        <li>PIML Framework</li>
+                        <li>SMOTE & Optuna</li>
+                        <li>SHAP (Explainable AI)</li>
+                        <li>Mechanical Heuristics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-rheology" class="detail-layer">
+        <div class="detail-header">
+            <div class="logo">MODULE: RHEOLOGY</div>
+            <div class="close-btn hover-trigger" onclick="closePage()">Return to System</div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-title">Hemodynamic Digital Twin</div>
+            <div class="detail-meta"><span>DATE: 01/2026</span> <span>DOMAIN: BIOMEDICAL CFD</span></div>
+            <div class="detail-body">
+                <div>
+                    <span class="detail-section-header">THE RESEARCH</span>
+                    <p>Developed a Physics-Informed Neural Network (PINN) framework to autonomously discover non-Newtonian blood rheology parameters from pulsatile CFD datasets of stenosed arteries.</p>
+                    
+                    <span class="detail-section-header">ACCURACY</span>
+                    <p>Engineered a high-accuracy hybrid pipeline integrating multi-fidelity data with boundary condition reconstruction, achieving &lt;2% error in predicting complex hemodynamic flow fields.</p>
+                    
+                    <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
+                </div>
+                <div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">TECH STACK</div>
+                    <ul class="tech-list">
+                        <li>PINN Framework</li>
+                        <li>Multi-Fidelity Data</li>
+                        <li>CFD (ANSYS Fluent)</li>
+                        <li>Boundary Reconstruction</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="page-voter" class="detail-layer">
         <div class="detail-header">
             <div class="logo">MODULE: VOTER</div>
@@ -562,7 +723,7 @@
                     <a href="https://github.com/Sarat-2007/Secure-Digital-Ballot" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
                 </div>
                 <div>
-                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">TECH STACK</div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">TECH STACK</div>
                     <ul class="tech-list">
                         <li>C Language (Standard Lib)</li>
                         <li>File Handling (Binary I/O)</li>
@@ -653,7 +814,7 @@
                     <a href="https://github.com/Sarat-2007/Bluetooth-Mobile-Robot" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
                 </div>
                 <div>
-                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">TECH STACK</div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">TECH STACK</div>
                     <ul class="tech-list">
                         <li>Arduino Uno R3</li>
                         <li>HC-05 Bluetooth Module</li>
@@ -798,7 +959,7 @@
                     <a href="https://github.com/Sarat-2007" class="repo-btn hover-trigger" target="_blank">ACCESS REPOSITORY <i class="fab fa-github"></i></a>
                 </div>
                 <div>
-                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: #fff;">SKILLS DEPLOYED</div>
+                    <div style="margin-bottom: 20px; font-family: 'Oswald'; color: var(--keyword-color);">SKILLS DEPLOYED</div>
                     <ul class="tech-list">
                         <li>Adobe Photoshop</li>
                         <li>Canva / Figma</li>
@@ -843,6 +1004,32 @@
             });
         }
         bindHovers();
+
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            
+            // Update icons
+            const desktopIcon = document.querySelector('#theme-toggle i');
+            const mobileIcon = document.querySelector('#mobile-theme-icon');
+            if(desktopIcon) {
+                desktopIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+            }
+            if(mobileIcon) {
+                mobileIcon.className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+            }
+        }
+        
+        // Initialize Theme
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            const desktopIcon = document.querySelector('#theme-toggle i');
+            const mobileIcon = document.querySelector('#mobile-theme-icon');
+            if(desktopIcon) desktopIcon.className = 'fas fa-moon';
+            if(mobileIcon) mobileIcon.className = 'fas fa-moon';
+        }
 
         // --- NAVIGATION LOGIC ---
         function jump(index) {
