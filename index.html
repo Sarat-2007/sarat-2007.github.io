@@ -65,9 +65,9 @@
 
     /* --- 3. CURSOR --- */
     #cursor {
-        position: fixed; width: 60px; height: 60px; background: var(--keyword-color); border-radius: 50%;
+        position: fixed; width: 60px; height: 60px; background: var(--cursor-color); border-radius: 50%;
         transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
-        mix-blend-mode: difference; transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+        mix-blend-mode: var(--cursor-mix); transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
     }
     body.active-hover #cursor { transform: translate(-50%, -50%) scale(0.3); }
 
@@ -76,10 +76,10 @@
         position: fixed; top: 0; left: 0; width: 100%; 
         padding: 30px 50px 30px 110px; 
         display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-        mix-blend-mode: difference;
+        /* mix-blend-mode removed for light mode compatibility */
     }
     .logo { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--keyword-color); }
-    .nav-list { display: flex; gap: 30px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
+    .nav-list { display: flex; gap: 30px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--text); }
     .nav-item { opacity: 0.6; transition: 0.3s; position: relative; cursor: none; text-transform: capitalize; }
     .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
 
@@ -276,8 +276,8 @@
     .detail-layer.open .detail-content { opacity: 1; transform: translateY(0); } 
 
     .detail-title { font-family: 'Oswald'; font-size: 3.5rem; text-transform: uppercase; line-height: 1; margin-bottom: 15px; }
-    .detail-meta { font-family: 'Space Mono', monospace; color: #888; margin-bottom: 40px; display: flex; gap: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; font-size: 0.9rem; }
-    .detail-body { font-family: 'Cormorant Garamond'; font-size: 1.5rem; line-height: 1.5; color: #ccc; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+    .detail-meta { font-family: 'Space Mono', monospace; color: var(--p-color); opacity: 0.8; margin-bottom: 40px; display: flex; gap: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; font-size: 0.9rem; }
+    .detail-body { font-family: 'Cormorant Garamond'; font-size: 1.5rem; line-height: 1.5; color: var(--p-color); display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
     
     .tech-list { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--accent); list-style: none; }
     .tech-list li { margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; transition: 0.3s; cursor: none;}
